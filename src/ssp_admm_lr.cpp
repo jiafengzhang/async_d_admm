@@ -93,26 +93,7 @@ int ADMM::miniter(double ** msgbuf, int num)
     }
     return minclk;
 }
-int ADMM::maxiter(double ** msgbuf, int num)
-{
-    int maxclk = (int)msgbuf[0][dim];
-    for(int i = 0; i < num; i++)
-    {
-        if((int)msgbuf[i][dim] > maxclk)
-            maxclk = (int)msgbuf[i][dim];
-    }
-    return maxclk;
-}
-int ADMM::getdelay()
-{
-    double maxclk = msgbuf[0][dim];
-    for(int32_t i = 0; i < procnum; i++)
-    {
-        if(msgbuf[i][dim] > maxclk)
-            maxclk = msgbuf[i][dim];
-    }
-    return (int)(maxclk - msgbuf[myid][dim]);
-}
+
 void ADMM::x_update()
 {
     //VectorXd Atb = ins->dataMat.transpose() * ins->label;
@@ -212,9 +193,6 @@ void ADMM::train()
 	MPI_Barrier(MPI_COMM_WORLD);
     time_begin = clock();
 
-
-
-    //msgbuf[myid][dim] = 0;
     MPI_Startall(dgree, recvRequests);
     //x_update();
     MPI_Startall(dgree, sendRequests);
@@ -257,8 +235,7 @@ void ADMM::train()
                     index[sum] = indices[i];
                     sum++;
                 }
-                //if(myid == 0)
-                //cout<<myid<<" delay:"<<k-minclk<<endl;
+
             }
 
         }
@@ -267,9 +244,7 @@ void ADMM::train()
         commtime += sum;
         x_update(); //x_update();
         alpha_update();
-        //msgbuf[myid][dim] = k;
-        //send recv
-        //printf("sum = %d\n", sum);
+
         if(myid == 0)
         {
             if(is_stop())

@@ -10,7 +10,7 @@
 ### edit the configure file
 		cd ../conf			(suppose your path at src directory)
 		vim admm.conf
-####congfigure
+#### congfigure
 			s is the partial barrier
 			delta is the bounded delay
 			dgree is the neighbors num. generally, dgree is not large than the agnet num. and s <= dgree

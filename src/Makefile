@@ -24,6 +24,6 @@ randomized_admm.o: randomized_admm.cpp
 	$(MPICXX) -c randomized_admm.cpp $(INC) $(CFLAGS)
 
 clean:
-	-rm -f *.o admm  dsg
+	-rm -f *.o admm  dsg radmm
 
 
